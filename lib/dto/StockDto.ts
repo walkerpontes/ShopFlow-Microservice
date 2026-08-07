@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export interface Verify {
@@ -22,9 +23,11 @@ export interface StockDto {
 }
 
 export class ChangeStock {
+  @ApiProperty({ example: 10 })
   @IsNumber()
   @IsNotEmpty()
   productId!: number;
+  @ApiProperty({ example: 99 })
   @IsNumber()
   @IsNotEmpty()
   quantidade!: number;

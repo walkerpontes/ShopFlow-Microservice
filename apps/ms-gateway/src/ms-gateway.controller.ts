@@ -25,18 +25,20 @@ import { CurrentUser } from '@/lib/decorator/user.decorator';
 import { ChangeStock } from '@/lib/dto/StockDto';
 import { Message } from '@/lib/dto/MessageDto';
 import type { Response } from 'express';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller()
+@ApiBearerAuth('acess-token')
 export class MsGatewayController {
   constructor(private readonly msGatewayService: MsGatewayService) {}
 
   @Get('/tst')
-  @Roles(RolesUser.USER)
+  @Roles(RolesUser.ADMIN)
   test(
     @CurrentUser() user: PayloadJwt,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = new Message(undefined, undefined);
+    const result = new Message(user);
     res.status(result.statusCode);
     return result;
   }

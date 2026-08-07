@@ -6,6 +6,9 @@ interface Err {
 }
 export class ErroPrisma {
   constructor(public erro: unknown) {
+    if (erro instanceof RpcException) {
+      throw erro;
+    }
     const error = erro as Err;
     const errorClassName = error.constructor?.name;
     const errorConfig: Record<string, { status: number; message: string }> = {
