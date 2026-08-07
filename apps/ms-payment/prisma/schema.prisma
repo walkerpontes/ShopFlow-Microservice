@@ -1,0 +1,29 @@
+generator cliente {
+    provider = "prisma-client-js"
+    output = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+    
+}
+
+enum PaymentMethod {
+    PIX
+    CREDIT_CARD
+    DEBIT_CARD
+}
+enum Status {
+    PEDING
+    APPROVED
+    REJECTED
+}
+
+model Payment {
+    id Int @id @default(autoincrement())
+    orderId Int
+    valor Decimal @db.Decimal(10, 2)
+    metodo PaymentMethod
+    status Status
+    createdAt DateTime @default(now())
+}

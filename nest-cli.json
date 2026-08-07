@@ -1,0 +1,65 @@
+{ 
+  "collection": "@nestjs/schematics",
+  "monorepo": true,
+  "projects": {
+    "ms-auth": {
+      "type": "application",
+      "root": "apps/ms-auth",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-auth/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-auth/tsconfig.app.json",
+        "assets": ["src/generated/**/*", "src/test.txt"],
+        "watchAssets": true 
+      }
+    },
+    "ms-gateway": {
+      "type": "application",
+      "root": "apps/ms-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-gateway/tsconfig.app.json",
+        "assets": [
+          { "include": "generated/**/*", "watchAssets": true }
+        ]
+      }
+    },
+    "ms-orders": {
+      "type": "application",
+      "root": "apps/ms-orders",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-orders/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-orders/tsconfig.app.json"
+      }
+    },
+    "ms-payment": {
+      "type": "application",
+      "root": "apps/ms-payment",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-payment/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-payment/tsconfig.app.json"
+      }
+    },
+    "ms-products": {
+      "type": "application",
+      "root": "apps/ms-products",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-products/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-products/tsconfig.app.json"
+      }
+    },
+    "ms-stock": {
+      "type": "application",
+      "root": "apps/ms-stock",
+      "entryFile": "main",
+      "sourceRoot": "apps/ms-stock/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ms-stock/tsconfig.app.json"
+      }
+    }
+  }
+}
