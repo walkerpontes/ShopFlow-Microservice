@@ -23,7 +23,5 @@ async function bootstrap() {
     },
   });
   await appRmq.listen();
-
-  console.log('Orders TCP + RabbitMQ iniciado');
 }
 bootstrap();

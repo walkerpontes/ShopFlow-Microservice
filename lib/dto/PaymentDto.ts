@@ -1,4 +1,5 @@
 import { PaymentMethod } from '@/apps/ms-payment/src/generated/prisma';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export enum MethodPayment {
@@ -44,9 +45,11 @@ export interface CardPaymentDto {
 }
 
 export class ResultPay {
+  @ApiProperty({ example: 10 })
   @IsNumber()
   @IsNotEmpty()
   idPayment!: number;
+  @ApiProperty({ example: 10 })
   @IsNumber()
   @IsNotEmpty()
   idOrder!: number;
