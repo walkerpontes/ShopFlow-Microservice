@@ -1,8 +1,16 @@
 import { Controller } from '@nestjs/common';
 import { MsStockService } from './ms-stock.service';
-import { EventPattern, MessagePattern, Transport } from '@nestjs/microservices';
+import {
+  Ctx,
+  EventPattern,
+  MessagePattern,
+  RmqContext,
+  RpcException,
+  Transport,
+} from '@nestjs/microservices';
 import { OrderItemsDto } from '@/lib/dto/OrderDto';
 import type { ChangeStock, Items } from '@/lib/dto/StockDto';
+import { Channel, Message } from 'amqplib';
 
 @Controller()
 export class MsStockController {
@@ -26,5 +34,17 @@ export class MsStockController {
   @EventPattern('stock_create', Transport.RMQ)
   async Create(stock: ChangeStock) {
     await this.msStockService.Create(stock);
+  }
+
+  @EventPattern('stock_rmq')
+  TestDlq(data: string, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+    try {
+      throw new RpcException('algo');
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
   }
 }

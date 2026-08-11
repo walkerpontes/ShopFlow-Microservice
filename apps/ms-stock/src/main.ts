@@ -18,8 +18,14 @@ async function bootstrap() {
     options: {
       urls: ['amqp://localhost:5672'],
       queue: 'stock_queue',
+      noAck: false,
       queueOptions: {
         durable: true,
+        arguments: {
+          'x-dead-letter-exchange': 'err.dlx',
+          'x-dead-letter-routing-key': 'err.key.dlq',
+          'x-message-ttl': 60000,
+        },
       },
     },
   });

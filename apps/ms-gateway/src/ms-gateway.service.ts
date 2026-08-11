@@ -193,4 +193,8 @@ export class MsGatewayService {
       200,
     );
   }
+
+  async Rmq() {
+    await firstValueFrom(this.stockRmqClient.emit('stock_rmq', 'dado'));
+  }
 }

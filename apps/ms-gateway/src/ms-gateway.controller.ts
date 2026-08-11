@@ -43,6 +43,12 @@ export class MsGatewayController {
     return result;
   }
 
+  @Get('/rmq')
+  async testRmq() {
+    await this.msGatewayService.Rmq();
+    return new Message();
+  }
+
   //***************** Auth ***********************
 
   @Post('/login')
