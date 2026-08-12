@@ -1,8 +1,15 @@
 import { Controller } from '@nestjs/common';
 import { MsOrdersService } from './ms-orders.service';
-import { EventPattern, MessagePattern, Transport } from '@nestjs/microservices';
+import {
+  Ctx,
+  EventPattern,
+  MessagePattern,
+  RmqContext,
+  Transport,
+} from '@nestjs/microservices';
 import type { CreateOrderDto } from '@/lib/dto/OrderDto';
 import type { ResultPay } from '@/lib/dto/PaymentDto';
+import { Channel, Message } from 'amqplib';
 
 @Controller()
 export class MsOrdersController {
@@ -24,11 +31,26 @@ export class MsOrdersController {
   }
 
   @EventPattern('order_sucess', Transport.RMQ)
-  async OrderSucess(result: ResultPay) {
-    await this.msOrdersService.OrderSucess(result);
+  async OrderSucess(result: ResultPay, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+    try {
+      await this.msOrdersService.OrderSucess(result);
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
   }
   @EventPattern('order_fail', Transport.RMQ)
-  async OrderFail(result: ResultPay) {
-    await this.msOrdersService.OrderFail(result);
+  async OrderFail(result: ResultPay, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+
+    try {
+      await this.msOrdersService.OrderFail(result);
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
   }
 }
