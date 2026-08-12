@@ -5,7 +5,6 @@ import {
   EventPattern,
   MessagePattern,
   RmqContext,
-  RpcException,
   Transport,
 } from '@nestjs/microservices';
 import { OrderItemsDto } from '@/lib/dto/OrderDto';
@@ -27,21 +26,23 @@ export class MsStockController {
   }
 
   @EventPattern('stock_sucess', Transport.RMQ)
-  async StockReduction(items: Items[]) {
-    await this.msStockService.StockReduction(items);
-  }
-
-  @EventPattern('stock_create', Transport.RMQ)
-  async Create(stock: ChangeStock) {
-    await this.msStockService.Create(stock);
-  }
-
-  @EventPattern('stock_rmq')
-  TestDlq(data: string, @Ctx() ctx: RmqContext) {
+  async StockReduction(items: Items[], @Ctx() ctx: RmqContext) {
     const channel = ctx.getChannelRef() as Channel;
     const message = ctx.getMessage() as Message;
     try {
-      throw new RpcException('algo');
+      await this.msStockService.StockReduction(items);
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
+  }
+
+  @EventPattern('stock_create', Transport.RMQ)
+  async Create(stock: ChangeStock, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+    try {
+      await this.msStockService.Create(stock);
       channel.ack(message);
     } catch {
       channel.nack(message, false, false);

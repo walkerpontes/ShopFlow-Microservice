@@ -1,7 +1,14 @@
 import { Controller } from '@nestjs/common';
 import { MsPaymentService } from './ms-payment.service';
-import { EventPattern, MessagePattern, Transport } from '@nestjs/microservices';
+import {
+  Ctx,
+  EventPattern,
+  MessagePattern,
+  RmqContext,
+  Transport,
+} from '@nestjs/microservices';
 import type { CreatePaymentDefaultDto, ResultPay } from '@/lib/dto/PaymentDto';
+import { Channel, Message } from 'amqplib';
 
 @Controller()
 export class MsPaymentController {
@@ -13,11 +20,25 @@ export class MsPaymentController {
   }
 
   @EventPattern('pay_sucess', Transport.RMQ)
-  async paymentSucess(result: ResultPay) {
-    await this.msPaymentService.PaymentSucess(result);
+  async paymentSucess(result: ResultPay, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+    try {
+      await this.msPaymentService.PaymentSucess(result);
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
   }
   @EventPattern('pay_fail', Transport.RMQ)
-  async paymentFail(result: ResultPay) {
-    await this.msPaymentService.PaymentFail(result);
+  async paymentFail(result: ResultPay, @Ctx() ctx: RmqContext) {
+    const channel = ctx.getChannelRef() as Channel;
+    const message = ctx.getMessage() as Message;
+    try {
+      await this.msPaymentService.PaymentFail(result);
+      channel.ack(message);
+    } catch {
+      channel.nack(message, false, false);
+    }
   }
 }

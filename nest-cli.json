@@ -16,15 +16,6 @@
         "watchAssets": true
       }
     },
-    "ms-dlq": {
-      "type": "application",
-      "root": "apps/ms-dlq",
-      "entryFile": "main",
-      "sourceRoot": "apps/ms-dlq/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/ms-dlq/tsconfig.app.json"
-      }
-    },
     "ms-gateway": {
       "type": "application",
       "root": "apps/ms-gateway",
