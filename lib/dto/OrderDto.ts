@@ -1,5 +1,5 @@
 import { Status } from '@/apps/ms-orders/src/generated/prisma';
-import { MethodPayment, ResultPaymentDto } from './PaymentDto';
+import { PaymentMethod, ResultPaymentDto } from './PaymentDto';
 import {
   IsArray,
   IsEnum,
@@ -64,7 +64,7 @@ export class CreateOrderDto {
   @ValidateNested({ each: true })
   @Type(() => OrderItemsDto)
   items!: OrderItemsDto[];
-  @ApiProperty({ enum: MethodPayment, example: MethodPayment.PIX })
-  @IsEnum(MethodPayment, { message: 'PIX, DEBIT_CARD or CREDIT_CARD' })
-  method!: MethodPayment;
+  @ApiProperty({ enum: PaymentMethod, example: PaymentMethod.PIX })
+  @IsEnum(PaymentMethod, { message: 'PIX, DEBIT_CARD or CREDIT_CARD' })
+  method!: PaymentMethod;
 }
