@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { MsGatewayService } from './ms-gateway.service';
 import { SignIn, SignUp, UserPatchDto } from '@/lib/dto/AuthDto';
@@ -18,29 +19,24 @@ import {
   ProductDto,
   ProductPatchDto,
 } from '@/lib/dto/ProductDto';
-import { Roles } from '@/lib/decorator/roles.decorator';
-import { type PayloadJwt, RolesUser } from '@/lib/dto/AuthDto';
+import { type PayloadJwt } from '@/lib/dto/AuthDto';
 import { IsPublic } from '@/lib/decorator/public.decorator';
 import { CurrentUser } from '@/lib/decorator/user.decorator';
 import { ChangeStock } from '@/lib/dto/StockDto';
-import { Message } from '@/lib/dto/MessageDto';
 import type { Response } from 'express';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Guard } from './guard';
+import { RoleGuard } from './role.guard';
 
 @Controller()
 @ApiBearerAuth('acess-token')
+@UseGuards(Guard, RoleGuard)
 export class MsGatewayController {
   constructor(private readonly msGatewayService: MsGatewayService) {}
 
-  @Get('/tst')
-  @Roles(RolesUser.ADMIN)
-  test(
-    @CurrentUser() user: PayloadJwt,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const result = new Message(user);
-    res.status(result.statusCode);
-    return result;
+  @Get('/me')
+  test(@CurrentUser() user: PayloadJwt) {
+    return user;
   }
 
   //***************** Auth ***********************
