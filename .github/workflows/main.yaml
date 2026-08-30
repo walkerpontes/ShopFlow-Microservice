@@ -24,9 +24,6 @@ jobs:
       
       - name: dependencies install
         run: npm ci
-      
-      - name: Build 
-        run: npm build
 
       - name: Generate and Build
         run: npm run build:all
