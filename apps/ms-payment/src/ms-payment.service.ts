@@ -15,7 +15,6 @@ import { ErroPrisma } from '@/lib/error/ErrorPrisma';
 export class MsPaymentService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject('STOCK_SERVICE') private readonly stockClient: ClientProxy,
     @Inject('ORDER_SERVICE') private readonly orderClient: ClientProxy,
   ) {}
 

@@ -1,4 +1,4 @@
-{ 
+{
   "collection": "@nestjs/schematics",
   "monorepo": true,
   "projects": {
@@ -9,8 +9,11 @@
       "sourceRoot": "apps/ms-auth/src",
       "compilerOptions": {
         "tsConfigPath": "apps/ms-auth/tsconfig.app.json",
-        "assets": ["src/generated/**/*", "src/test.txt"],
-        "watchAssets": true 
+        "assets": [
+          "src/generated/**/*",
+          "src/test.txt"
+        ],
+        "watchAssets": true
       }
     },
     "ms-gateway": {
@@ -21,7 +24,10 @@
       "compilerOptions": {
         "tsConfigPath": "apps/ms-gateway/tsconfig.app.json",
         "assets": [
-          { "include": "generated/**/*", "watchAssets": true }
+          {
+            "include": "generated/**/*",
+            "watchAssets": true
+          }
         ]
       }
     },

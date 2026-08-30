@@ -1,8 +1,7 @@
-import { PaymentMethod } from '@/apps/ms-payment/src/generated/prisma';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export enum MethodPayment {
+export enum PaymentMethod {
   PIX = 'PIX',
   DEBIT_CARD = 'DEBIT_CARD',
   CREDIT_CARD = 'CREDIT_CARD',
@@ -17,7 +16,7 @@ export enum StatusPayment {
 export interface CreatePaymentDto {
   orderId: number;
   valor: number;
-  method: MethodPayment;
+  method: PaymentMethod;
 }
 
 export interface CreatePaymentDefaultDto {
@@ -32,7 +31,7 @@ export interface ResultPaymentDto {
   createdAt: Date;
   orderId: number;
   valor: number;
-  method: MethodPayment;
+  method: PaymentMethod;
   data: PixPaymentDto | CardPaymentDto;
 }
 
