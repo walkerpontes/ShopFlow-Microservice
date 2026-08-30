@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "build:all": "npm run build:auth && npm run build:orders && npm run build:payment && npm run build:products && npm run build:stock",
     "build:auth": "npm run generate:auth && nest build ms-auth && cp -r apps/ms-auth/src/generated dist/apps/ms-auth/src/",
     "build:orders": "npm run generate:orders && nest build ms-orders && cp -r apps/ms-orders/src/generated dist/apps/ms-orders/src/",
     "build:payment": "npm run generate:payment && nest build ms-payment && cp -r apps/ms-payment/src/generated dist/apps/ms-payment/src/",

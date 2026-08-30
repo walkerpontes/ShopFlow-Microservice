@@ -1,0 +1,36 @@
+name: CI Microservices
+on: 
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      
+      - name: dependencies install
+        run: npm ci
+      
+      - name: Build 
+        run: npm build
+
+      - name: Generate and Build
+        run: npm run build:all
+
+      - name: Services Tests
+        run: npm test
+      
